@@ -186,7 +186,7 @@ app.patch("/interest/:interestId", async (req, res) => {
   }
 });
 
-    // ---------------------------------------------------
+    // ------------------------------------------------
     // await client.db("admin").command({ ping: 1 });
     console.log("✅ MongoDB connected successfully!");
   } finally {
