@@ -146,12 +146,6 @@ async function run() {
       }
     });
 
-
-
-
-
-
-
     // PATCH: update interest status (accept And reject)
 app.patch("/interest/:interestId", async (req, res) => {
   const { interestId } = req.params;
