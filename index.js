@@ -39,7 +39,7 @@ async function run() {
       res.send(result);
     });
 
-    // ------------------- CROPS API ------------------
+    // ------------------ CROPS API ------------------
     app.get("/crops", async (req, res) => {
       const email = req.query.email;
       const query = email ? { "owner.ownerEmail": email } : {};
