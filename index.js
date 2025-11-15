@@ -27,7 +27,7 @@ async function run() {
     const interestCollections = db.collection("interest");
     const usersCollections = db.collection("users");
 
-    // ------------------- USERS API -------------------
+    // ------------------- USERS API ------------------
     app.post("/users", async (req, res) => {
       const newUser = req.body;
       const email = req.body.email;
