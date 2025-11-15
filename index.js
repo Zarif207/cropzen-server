@@ -70,7 +70,9 @@ async function run() {
 
     app.delete("/crops/:id", async (req, res) => {
       const id = req.params.id;
-      const result = await cropsCollections.deleteOne({ _id: new ObjectId(id) });
+      const result = await cropsCollections.deleteOne({
+        _id: new ObjectId(id),
+      });
       res.send(result);
     });
 
@@ -93,7 +95,9 @@ async function run() {
 
     app.get("/interest/:id", async (req, res) => {
       const id = req.params.id;
-      const result = await interestCollections.findOne({ _id: new ObjectId(id) });
+      const result = await interestCollections.findOne({
+        _id: new ObjectId(id),
+      });
       res.send(result);
     });
 
@@ -105,7 +109,9 @@ async function run() {
 
     app.delete("/interest/:id", async (req, res) => {
       const id = req.params.id;
-      const result = await interestCollections.deleteOne({ _id: new ObjectId(id) });
+      const result = await interestCollections.deleteOne({
+        _id: new ObjectId(id),
+      });
       res.send(result);
     });
 
@@ -115,13 +121,11 @@ async function run() {
       const { status } = req.body;
 
       try {
-       
         const updateInterest = await interestCollections.updateOne(
           { _id: new ObjectId(interestId) },
           { $set: { status } }
         );
 
-    
         if (status === "accepted") {
           const interest = await interestCollections.findOne({
             _id: new ObjectId(interestId),
@@ -130,7 +134,7 @@ async function run() {
           if (interest && interest.quantity) {
             await cropsCollections.updateOne(
               { _id: new ObjectId(cropId) },
-              { $inc: { quantity: -interest.quantity } } 
+              { $inc: { quantity: -interest.quantity } }
             );
           }
         }
@@ -142,43 +146,47 @@ async function run() {
         });
       } catch (error) {
         console.error("Error updating interest:", error);
-        res.status(500).send({ success: false, error: "Internal Server Error" });
+        res
+          .status(500)
+          .send({ success: false, error: "Internal Server Error" });
       }
     });
 
-    // PATCH: update interest status (accept And reject)
-app.patch("/interest/:interestId", async (req, res) => {
-  const { interestId } = req.params;
-  const { cropsId, status } = req.body;
+    // PATCH: update interest status (accept And Reject)
+    app.patch("/interest/:interestId", async (req, res) => {
+      const { interestId } = req.params;
+      const { cropsId, status } = req.body;
 
-  try {
-    const updateInterest = await interestCollections.updateOne(
-      { _id: new ObjectId(interestId) },
-      { $set: { status } }
-    );
-    if (status === "accepted") {
-      const interest = await interestCollections.findOne({
-        _id: new ObjectId(interestId),
-      });
-
-      if (interest && interest.quantity) {
-        await cropsCollections.updateOne(
-          { _id: new ObjectId(cropsId) },
-          { $inc: { quantity: -interest.quantity } } 
+      try {
+        const updateInterest = await interestCollections.updateOne(
+          { _id: new ObjectId(interestId) },
+          { $set: { status } }
         );
-      }
-    }
+        if (status === "accepted") {
+          const interest = await interestCollections.findOne({
+            _id: new ObjectId(interestId),
+          });
 
-    res.send({
-      success: true,
-      message: `Interest marked as ${status}`,
-      updateInterest,
+          if (interest && interest.quantity) {
+            await cropsCollections.updateOne(
+              { _id: new ObjectId(cropsId) },
+              { $inc: { quantity: -interest.quantity } }
+            );
+          }
+        }
+
+        res.send({
+          success: true,
+          message: `Interest marked as ${status}`,
+          updateInterest,
+        });
+      } catch (error) {
+        console.error("Error updating interest:", error);
+        res
+          .status(500)
+          .send({ success: false, error: "Internal server error" });
+      }
     });
-  } catch (error) {
-    console.error("Error updating interest:", error);
-    res.status(500).send({ success: false, error: "Internal server error" });
-  }
-});
 
     // ------------------------------------------------
     // await client.db("admin").command({ ping: 1 });
