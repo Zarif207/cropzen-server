@@ -54,7 +54,3 @@ Beautiful front-end UI using **React + Tailwind**, optimized for all screen size
 - MongoDB (Atlas)  
 - Dotenv  
 - CORS  
-
----
-
-## 📁 Folder Structure (Backend)
